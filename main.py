@@ -48,10 +48,10 @@ def root():
 @app.post("/predict")
 def predict_churn(customer: CustomerData):
     try:
-        # Convert to DataFrame
+  
         data = customer.dict()
 
-        # Fix column names to match your model
+     
         data['MultipleLines_No phone service'] = data.pop('MultipleLines_No_phone_service')
         data['InternetService_Fiber optic'] = data.pop('InternetService_Fiber_optic')
         data['OnlineSecurity_No internet service'] = data.pop('OnlineSecurity_No_internet_service')
@@ -68,11 +68,11 @@ def predict_churn(customer: CustomerData):
 
         df = pd.DataFrame([data])
 
-        # REORDER COLUMNS TO MATCH TRAINING DATA
+        
         expected_columns = model.feature_names_in_  # Get the column order from the model
         df = df.reindex(columns=expected_columns, fill_value=0)  # Reorder and fill missing with 0
 
-        # Get prediction
+        
         probability = model.predict_proba(df)[0][1]
         prediction = model.predict(df)[0]
 
